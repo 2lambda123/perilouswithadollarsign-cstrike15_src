@@ -30,11 +30,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 """Unit test for the gtest_xml_output module."""
+import defusedxml.minidom
 
 __author__ = "keith.ray@gmail.com (Keith Ray)"
 
 import os
-from xml.dom import minidom, Node
+from xml.dom import Node
 
 import gtest_test_utils
 import gtest_xml_test_utils
@@ -115,11 +116,11 @@ class GTestXMLOutFilesTest(gtest_xml_test_utils.GTestXMLTestCase):
     self.assert_(os.path.isfile(output_file1) or os.path.isfile(output_file2),
                  output_file1)
 
-    expected = minidom.parseString(expected_xml)
+    expected = defusedxml.minidom.parseString(expected_xml)
     if os.path.isfile(output_file1):
-      actual = minidom.parse(output_file1)
+      actual = defusedxml.minidom.parse(output_file1)
     else:
-      actual = minidom.parse(output_file2)
+      actual = defusedxml.minidom.parse(output_file2)
     self.NormalizeXml(actual.documentElement)
     self.AssertEquivalentNodes(expected.documentElement,
                                actual.documentElement)
